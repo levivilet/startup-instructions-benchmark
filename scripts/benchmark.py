@@ -53,6 +53,20 @@ def visible_window(pids):
     return None
 
 
+def diagnostics(home):
+    windows = subprocess.run(['xwininfo', '-root', '-tree'], capture_output=True, text=True).stdout
+    properties = []
+    import re
+    for window in re.findall(r'^\s+(0x[0-9a-f]+)', windows, re.MULTILINE):
+        query = subprocess.run(['xprop', '-id', window, '_NET_WM_WINDOW_TYPE',
+                                'WM_NAME', 'WM_CLASS', '_NET_WM_PID'], capture_output=True, text=True)
+        properties.append({'windowId': window, 'properties': query.stdout})
+    logs = {str(p.relative_to(home)): p.read_text(errors='replace')[-12000:]
+            for p in home.rglob('*.log') if p.is_file()}
+    processes = subprocess.run(['ps', '-eo', 'pid,ppid,user,stat,args'], capture_output=True, text=True).stdout
+    return dict(windowTree=windows, windowProperties=properties, editorLogs=logs, processes=processes)
+
+
 def trial(editor, perf):
     with tempfile.TemporaryDirectory(prefix='startup-trial-') as directory:
         d = Path(directory)
@@ -91,6 +105,7 @@ def trial(editor, perf):
                                           pidsAtCutoff=pids, command=command)
                             break
                         if time.monotonic() - start > PROTOCOL['timeoutSeconds']:
+                            failure_diagnostics = diagnostics(home)
                             raise RuntimeError('main window readiness timeout')
                         time.sleep(PROTOCOL['pollSeconds'])
                 
@@ -98,6 +113,7 @@ def trial(editor, perf):
             return result
         except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
             return {'valid': False, 'error': str(error), 'command': command,
+                    'diagnostics': locals().get('failure_diagnostics', diagnostics(home)),
                     **{name: (d / name).read_text(errors='replace')[-8000:]
                        for name in ['stdout', 'stderr', 'perf.log'] if (d / name).exists()}}
 
