@@ -1,11 +1,13 @@
 import copy
 import json
+import os
+from unittest.mock import Mock
 from pathlib import Path
 import sys
 import tempfile
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
-from counters import parse_counter
+from counters import Capture, parse_counter
 import report
 
 
@@ -18,6 +20,26 @@ def result(editor):
 
 
 class MetricsTest(unittest.TestCase):
+    def test_control_acknowledgement_formats(self):
+        for ack in [b'ack\n', b'ack\n\x00', b'wrong\n']:
+            control_read, control_write = os.pipe()
+            ack_read, ack_write = os.pipe()
+            try:
+                os.write(ack_write, ack)
+                capture = Capture('unused', '.')
+                capture.fds = [control_write, ack_read]
+                capture.process = Mock()
+                capture.process.poll.return_value = None
+                if ack.startswith(b'ack'):
+                    capture.control('disable')
+                else:
+                    with self.assertRaises(RuntimeError):
+                        capture.control('disable')
+                self.assertEqual(os.read(control_read, 256), b'disable\n')
+            finally:
+                for fd in [control_read, control_write, ack_read, ack_write]:
+                    os.close(fd)
+
     def test_counter_rejects_unsupported_zero_and_multiplexing(self):
         self.assertEqual(parse_counter('123;;instructions;group;100;100.00;;'), 123)
         for count, running in [('<not supported>', '100'), ('0', '100'), ('123', '50'), ('123', 'nan')]:

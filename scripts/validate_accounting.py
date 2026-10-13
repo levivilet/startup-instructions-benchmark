@@ -22,22 +22,22 @@ def measure(mode, after=0, harness=False):
 
 
 def capture_workload(d, mode, after, harness):
-        with Capture(sys.argv[1], d) as capture:
-            with (d / 'stdout').open('w') as stdout, (d / 'stderr').open('w') as stderr:
-                child = capture.launch([str(Path('.tmp/workload').resolve()), mode, '10000000',
-                                        str(d / 'ready'), str(d / 'go'), str(after)],
-                                       os.environ.copy(), stdout, stderr)
-            deadline = time.monotonic() + 10
-            while not (d / 'ready').exists():
-                if time.monotonic() > deadline:
-                    raise RuntimeError('workload readiness timeout')
-                time.sleep(.005)
-            if harness:
-                subprocess.run([sys.executable, '-c', 'sum(i*i for i in range(3000000))'], check=True)
-            capture.cutoff()
-            (d / 'go').touch()
-            child.wait(timeout=10)
-            return capture.finish()
+    with Capture(sys.argv[1], d) as capture:
+        with (d / 'stdout').open('w') as stdout, (d / 'stderr').open('w') as stderr:
+            child = capture.launch([str(Path('.tmp/workload').resolve()), mode, '10000000',
+                                    str(d / 'ready'), str(d / 'go'), str(after)],
+                                   os.environ.copy(), stdout, stderr)
+        deadline = time.monotonic() + 10
+        while not (d / 'ready').exists():
+            if time.monotonic() > deadline:
+                raise RuntimeError('workload readiness timeout')
+            time.sleep(.005)
+        if harness:
+            subprocess.run([sys.executable, '-c', 'sum(i*i for i in range(3000000))'], check=True)
+        capture.cutoff()
+        (d / 'go').touch()
+        child.wait(timeout=10)
+        return capture.finish()
 
 
 Path('results').mkdir(exist_ok=True)

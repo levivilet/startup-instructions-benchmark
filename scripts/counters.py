@@ -55,7 +55,8 @@ class Capture:
         os.write(self.fds[0], (command + '\n').encode())
         if not select.select([self.fds[1]], [], [], 5)[0]:
             raise RuntimeError(f'perf did not acknowledge {command}')
-        if os.read(self.fds[1], 256) != b'ack\n':
+        # perf 6.8 writes sizeof("ack\n"), including the C NUL terminator.
+        if os.read(self.fds[1], 256) not in (b'ack\n', b'ack\n\x00'):
             raise RuntimeError('invalid perf control acknowledgement')
         if self.process.poll() is not None:
             raise RuntimeError('perf exited before cutoff')
