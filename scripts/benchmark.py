@@ -11,7 +11,7 @@ from counters import Capture
 
 ROOT = Path(__file__).resolve().parent.parent
 PROTOCOL = {
-    'version': 1, 'metric': 'retired hardware instructions (user and kernel)',
+    'version': 2, 'metric': 'retired hardware instructions (user and kernel)',
     'boundary': 'launch through first visible normal main window',
     'accounting': 'per-CPU cgroup; includes all descendants, including detached and exited tasks',
     'profile': 'fresh HOME and XDG directories every trial, no bootstrap launch',
@@ -41,14 +41,27 @@ def command_for(editor, home):
     return [binary, *args]
 
 
+def is_main_window(properties):
+    # EWMH: managed windows without type or transient-parent hints default
+    # to NORMAL. Zed uses this valid omission instead of an explicit atom.
+    lines = properties.splitlines()
+    type_line = next((line for line in lines if line.startswith('_NET_WM_WINDOW_TYPE')), '')
+    transient_line = next((line for line in lines if line.startswith('WM_TRANSIENT_FOR')), '')
+    managed = 'window state: Normal' in properties
+    normal = '_NET_WM_WINDOW_TYPE_NORMAL' in type_line
+    default_normal = (type_line.partition(':')[2].strip() == 'not found.' and
+                      transient_line.partition(':')[2].strip() == 'not found.')
+    return managed and (normal or default_normal)
+
+
 def visible_window(pids):
     for pid in pids:
         search = subprocess.run(['xdotool', 'search', '--onlyvisible', '--pid', str(pid)],
                                 capture_output=True, text=True)
         for window in search.stdout.split():
             props = subprocess.check_output(['xprop', '-id', window, '_NET_WM_WINDOW_TYPE',
-                                             'WM_NAME', 'WM_CLASS', '_NET_WM_PID'], text=True)
-            if '_NET_WM_WINDOW_TYPE_NORMAL' in props:
+                                             'WM_NAME', 'WM_CLASS', '_NET_WM_PID', 'WM_TRANSIENT_FOR', 'WM_STATE'], text=True)
+            if is_main_window(props):
                 return {'windowId': window, 'pid': pid, 'properties': props}
     return None
 
@@ -113,7 +126,7 @@ def trial(editor, perf):
             return result
         except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
             return {'valid': False, 'error': str(error), 'command': command,
-                    'diagnostics': locals().get('failure_diagnostics', diagnostics(home)),
+                    'diagnostics': failure_diagnostics if 'failure_diagnostics' in locals() else diagnostics(home),
                     **{name: (d / name).read_text(errors='replace')[-8000:]
                        for name in ['stdout', 'stderr', 'perf.log'] if (d / name).exists()}}
 

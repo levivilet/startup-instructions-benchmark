@@ -10,7 +10,8 @@ host metadata, window evidence and measurement protocol.
 
 Each trial starts with a fresh HOME and XDG configuration/data/cache/state profile.
 There is no bootstrap launch. Startup ends at the **first visible normal main
-window** owned by a process in the editor cgroup. Splash windows are excluded.
+window** owned by a process in the editor cgroup. Splash windows are excluded. Managed windows without a window-type hint and
+without a transient parent use the standard EWMH normal-window default, as Zed does.
 This measures window readiness, not interactivity, document loading or completion
 of background startup work. Polling happens every 20 ms, plus the time needed to
 inspect windows; polling and counter-disable latency are included in the measured

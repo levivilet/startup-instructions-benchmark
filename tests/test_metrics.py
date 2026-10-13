@@ -9,6 +9,7 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
 from counters import Capture, parse_counter
 import report
+from benchmark import is_main_window
 
 
 def result(editor):
@@ -20,6 +21,16 @@ def result(editor):
 
 
 class MetricsTest(unittest.TestCase):
+    def test_main_window_type_defaults_and_rejections(self):
+        mapped = 'WM_STATE(WM_STATE):\n    window state: Normal\n'
+        missing = '_NET_WM_WINDOW_TYPE:  not found.\nWM_TRANSIENT_FOR:  not found.\n'
+        self.assertTrue(is_main_window(mapped + missing))
+        self.assertTrue(is_main_window(mapped + '_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL'))
+        self.assertFalse(is_main_window(missing))
+        self.assertFalse(is_main_window(mapped + '_NET_WM_WINDOW_TYPE: not found.\nWM_TRANSIENT_FOR(WINDOW): window id # 0x123'))
+        for kind in ['SPLASH', 'DIALOG', 'UTILITY', 'MENU']:
+            self.assertFalse(is_main_window(mapped + f'_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_{kind}'))
+
     def test_control_acknowledgement_formats(self):
         for ack in [b'ack\n', b'ack\n\x00', b'wrong\n']:
             control_read, control_write = os.pipe()
