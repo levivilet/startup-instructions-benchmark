@@ -59,6 +59,7 @@ No report is published from synthetic test data.
 Run tests with `python3 -m unittest discover -s tests`. Hardware measurement needs
 Linux ARM64, a writable cgroup v2 root, a usable PMU, perf and the desktop packages
 listed in the workflow. The workflow provisions them and uses sudo for cgroup and
-per-CPU counter access. Run it through GitHub Actions to reproduce the complete
+per-CPU counter access. The launcher drops to the normal runner UID before
+exec; the isolated profile and X11 desktop belong to that user. Run it through GitHub Actions to reproduce the complete
 matrix, or use `scripts/install.py`, `scripts/validate_accounting.py` and
 `scripts/run.sh` in the same environment.

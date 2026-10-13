@@ -12,6 +12,8 @@ from counters import Capture
 def measure(mode, after=0, harness=False):
     with tempfile.TemporaryDirectory() as directory:
         d = Path(directory)
+        if 'SUDO_UID' in os.environ:
+            os.chown(d, int(os.environ['SUDO_UID']), int(os.environ['SUDO_GID']))
         try:
             return capture_workload(d, mode, after, harness)
         except BaseException:

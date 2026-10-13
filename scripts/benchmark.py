@@ -17,7 +17,7 @@ PROTOCOL = {
     'profile': 'fresh HOME and XDG directories every trial, no bootstrap launch',
     'cache': 'warm OS filesystem caches permitted; application profiles always fresh',
     'pollSeconds': .02, 'timeoutSeconds': 120,
-    'launcher': 'includes child cgroup-entry and exec overhead; controller and desktop excluded',
+    'launcher': 'includes child cgroup-entry, privilege drop and exec overhead; controller and desktop excluded',
     'cutoff': 'perf disable acknowledgement before shutdown; includes polling/control latency',
 }
 
@@ -62,9 +62,15 @@ def trial(editor, perf):
                'GALLIUM_DRIVER': 'llvmpipe', 'ZED_ALLOW_EMULATED_GPU': '1',
                'ELECTRON_OZONE_PLATFORM_HINT': 'x11'}
         for key, name in [('XDG_CONFIG_HOME', 'config'), ('XDG_DATA_HOME', 'data'),
-                          ('XDG_CACHE_HOME', 'cache'), ('XDG_STATE_HOME', 'state')]:
+                          ('XDG_CACHE_HOME', 'cache'), ('XDG_STATE_HOME', 'state'),
+                          ('XDG_RUNTIME_DIR', 'runtime')]:
             env[key] = str(home / name)
             (home / name).mkdir()
+        (home / 'runtime').chmod(0o700)
+        if 'SUDO_UID' in env:
+            uid, gid = int(env['SUDO_UID']), int(env['SUDO_GID'])
+            for path in [d, home, *home.iterdir()]:
+                os.chown(path, uid, gid)
         command = command_for(editor, home)
         try:
             with Capture(perf, d) as capture:
@@ -109,6 +115,7 @@ def main():
             'perf': subprocess.check_output([args.perf, '--version'], text=True).strip(),
             'eventSources': sorted(p.name for p in Path('/sys/bus/event_source/devices').iterdir()),
             'paranoid': Path('/proc/sys/kernel/perf_event_paranoid').read_text().strip(),
+            'editorUid': int(os.environ.get('SUDO_UID', os.getuid())),
             'runUrl': os.environ.get('BENCHMARK_RUN_URL'), 'commit': os.environ.get('BENCHMARK_COMMIT')}
     if host['machine'] != 'aarch64':
         raise SystemExit('requires Linux ARM64')

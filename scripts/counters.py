@@ -1,4 +1,5 @@
 """Cgroup-scoped hardware counters; the controller stays outside the cgroup."""
+import errno
 import os
 from pathlib import Path
 import select
@@ -30,6 +31,7 @@ class Capture:
         self.perf = perf
         self.process = None
         self.fds = []
+        self.children = []
         self.disabled_at = None
 
     def __enter__(self):
@@ -66,8 +68,14 @@ class Capture:
         # desktop, readiness polling and perf remain outside it.
         def enter_group():
             (self.group / 'cgroup.procs').write_text(str(os.getpid()))
-        return subprocess.Popen(command, env=environment, stdout=stdout, stderr=stderr,
-                                preexec_fn=enter_group, start_new_session=True)
+            if 'SUDO_UID' in environment:
+                os.setgroups([])
+                os.setgid(int(environment['SUDO_GID']))
+                os.setuid(int(environment['SUDO_UID']))
+        child = subprocess.Popen(command, env=environment, stdout=stdout, stderr=stderr,
+                                 preexec_fn=enter_group, start_new_session=True)
+        self.children.append(child)
+        return child
 
     def pids(self):
         return [int(pid) for pid in (self.group / 'cgroup.procs').read_text().split()]
@@ -88,27 +96,37 @@ class Capture:
 
     def __exit__(self, *args):
         # Disable before killing anything, including when readiness fails.
-        if self.process and self.process.poll() is None:
-            if self.disabled_at is None:
-                try:
-                    self.cutoff()
-                except (OSError, RuntimeError):
-                    pass
-            os.killpg(self.process.pid, signal.SIGKILL)
-            self.process.wait()
-        if self.group.exists():
-            (self.group / 'cgroup.kill').write_text('1')
-            for _ in range(100):
-                if not self.pids():
-                    break
-                time.sleep(.01)
-            self.group.rmdir()
-        if self.process:
-            try:
+        try:
+            if self.process and self.process.poll() is None:
+                if self.disabled_at is None:
+                    try:
+                        self.cutoff()
+                    except (OSError, RuntimeError):
+                        pass
                 os.killpg(self.process.pid, signal.SIGKILL)
-            except ProcessLookupError:
-                pass
-        for fd in self.fds:
-            os.close(fd)
-        if hasattr(self, 'log'):
-            self.log.close()
+                self.process.wait()
+            if self.group.exists():
+                (self.group / 'cgroup.kill').write_text('1')
+                # Reap launcher zombies before rmdir: they can keep the cgroup
+                # busy even after cgroup.procs no longer lists live tasks.
+                for child in self.children:
+                    child.wait(timeout=5)
+                deadline = time.monotonic() + 5
+                while True:
+                    try:
+                        self.group.rmdir()
+                        break
+                    except OSError as error:
+                        if error.errno != errno.EBUSY or time.monotonic() >= deadline:
+                            raise
+                        time.sleep(.01)
+        finally:
+            if self.process:
+                try:
+                    os.killpg(self.process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            for fd in self.fds:
+                os.close(fd)
+            if hasattr(self, 'log'):
+                self.log.close()

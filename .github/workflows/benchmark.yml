@@ -57,8 +57,7 @@ jobs:
           BENCHMARK_COMMIT: ${{ github.sha }}
         run: |
           PERF=$(find -L /usr/lib/linux-tools -name perf -type f | sort | tail -n 1)
-          sudo env BENCHMARK_RUN_URL="$BENCHMARK_RUN_URL" BENCHMARK_COMMIT="$BENCHMARK_COMMIT" \
-            xvfb-run -a -s '-screen 0 1280x800x24' bash scripts/run.sh "${{ matrix.editor }}" "$PERF"
+          xvfb-run -a -s '-screen 0 1280x800x24' bash scripts/run.sh "${{ matrix.editor }}" "$PERF"
       - uses: actions/upload-artifact@v5
         if: always()
         with:
