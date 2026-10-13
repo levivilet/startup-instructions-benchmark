@@ -43,7 +43,7 @@ class Capture:
             self.process = subprocess.Popen([
                 self.perf, 'stat', '-a', '-e', 'instructions', '-G', self.group.name,
                 '-x', ';', '-D', '-1', '--control', f'fd:{self.fds[0]},{self.fds[1]}',
-                '--', 'sleep', '300'], pass_fds=tuple(self.fds),
+                ], pass_fds=tuple(self.fds),
                 stdout=subprocess.DEVNULL, stderr=self.log, start_new_session=True)
             self.control('enable')
             return self
