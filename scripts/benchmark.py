@@ -117,6 +117,9 @@ def trial(editor, perf, extra_switches=(), verify_render_and_exit=False):
         env = {**os.environ, 'HOME': str(home), 'LC_ALL': 'C', 'LIBGL_ALWAYS_SOFTWARE': '1',
                'GALLIUM_DRIVER': 'llvmpipe', 'ZED_ALLOW_EMULATED_GPU': '1',
                'ELECTRON_OZONE_PLATFORM_HINT': 'x11'}
+        exit_signal = d / 'benchmark-exit.signal'
+        if verify_render_and_exit:
+            env['BASIC_ELECTRON_BENCHMARK_EXIT_SIGNAL'] = str(exit_signal)
         for key, name in [('XDG_CONFIG_HOME', 'config'), ('XDG_DATA_HOME', 'data'),
                           ('XDG_CACHE_HOME', 'cache'), ('XDG_STATE_HOME', 'state'),
                           ('XDG_RUNTIME_DIR', 'runtime')]:
@@ -144,6 +147,7 @@ def trial(editor, perf, extra_switches=(), verify_render_and_exit=False):
                             result = capture.finish()
                             render_validation = None
                             if verify_render_and_exit:
+                                exit_signal.touch()
                                 child.wait(timeout=10)
                                 stdout_text = (d / 'stdout').read_text(errors='replace')
                                 marker = 'BENCHMARK_RENDER_VERIFIED=true'
