@@ -45,6 +45,33 @@ does not identify an ARM64 build and its [Snap stable channel](https://api.snapc
 lists only amd64. These exclusions are not zero-valued results. The full
 nine-editor matrix must succeed for a report to be considered complete.
 
+## Basic Electron switch experiment
+
+The `Electron switch experiment` CI job measures Basic Electron v44.3.0 on the
+same ARM host and X11 setup with thirty fresh-profile trials for each configuration:
+the existing baseline, `--disable-background-networking`,
+`--disable-http-cache`, `--disable-http2`, and the two documented HTTP switches
+together. It uploads each complete result as `electron-switch-experiment`,
+including the exact command, raw per-trial counter output, host metadata, window
+evidence and fresh-profile protocol. Ten blocks of three trials run in seeded,
+shuffled configuration order; the seed and full order are stored with each
+result. Filesystem caches may warm across configurations, as in the main benchmark.
+The [v44.3.0 ARM64 results and raw trials](reports/electron-switch-experiment-v44.3.0-arm64.md)
+record the measured comparison and its limitations.
+After each instruction cutoff, the experiment also verifies the expected document
+title and heading and requires the Electron process tree to exit with status 0;
+this post-cutoff work does not affect the measured count.
+
+Electron v44.3.0 documents `--disable-http-cache` and `--disable-http2` as
+supported switches. Its switch documentation says unsupported switches have no
+effect, so `--disable-background-networking` is included only as an exploratory
+Chromium flag and is not treated as an Electron recommendation. The Basic
+Electron fixture renders a local `data:` URL and makes no network requests;
+the network switches are not representative of apps that load remote content.
+None of these settings is recommended as an application default without a
+separate functional and security review. See Electron's [v44.3.0 switch
+documentation](https://github.com/electron/electron/blob/v44.3.0/docs/api/command-line-switches.md).
+
 ## Validation and publication
 
 The ARM feasibility probe first demonstrated a working PMU on `ubuntu-24.04-arm`.

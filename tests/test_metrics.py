@@ -7,12 +7,14 @@ from pathlib import Path
 import sys
 import tempfile
 import tarfile
+import time
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
 from counters import Capture, parse_counter
 from install import checksum, extract
 import report
 import benchmark
+import switch_experiment
 from benchmark import is_main_window
 
 
@@ -62,6 +64,88 @@ class MetricsTest(unittest.TestCase):
                 self.assertEqual(cursor[0], str(root / '.tmp/apps/cursor/usr/share/cursor/cursor'))
                 self.assertIn(str(home / 'profile'), cursor)
                 self.assertIn(str(home / 'extensions'), cursor)
+
+    def test_electron_switch_sets_are_applied_before_app_argument(self):
+        home = Path('/tmp/startup-profile')
+        editor = next(entry for entry in report.EDITORS if entry['id'] == 'basic-electron')
+        switches = benchmark.ELECTRON_SWITCH_SETS['disable-http-cache+disable-http2']
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(benchmark, 'ROOT', Path(directory)):
+                command = benchmark.command_for(editor, home, switches, verify_render_and_exit=True)
+        app_argument = command.index(str(Path(directory) / 'basic-electron'))
+        self.assertEqual(command[command.index('--disable-gpu') + 2:app_argument], switches)
+        self.assertEqual(command[app_argument + 1], '--benchmark-verify-render')
+        self.assertEqual(benchmark.ELECTRON_SWITCH_SETS['baseline'], [])
+
+    def test_render_verification_waits_until_after_counter_cutoff_to_exit(self):
+        events = []
+
+        class FakeChild:
+            returncode = None
+
+            def __init__(self, exit_signal):
+                self.exit_signal = Path(exit_signal)
+
+            def wait(self, timeout=None):
+                self.assert_exit_signal()
+                self.returncode = 0
+                events.append('child-exit')
+                return 0
+
+            def assert_exit_signal(self):
+                if not self.exit_signal.exists():
+                    raise AssertionError('benchmark exit signal was not created before app exit')
+
+        class FakeCapture:
+            disabled_at = None
+
+            def __init__(self, _perf, _directory):
+                pass
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                pass
+
+            def launch(self, _command, environment, stdout, _stderr):
+                self.environment = environment
+                stdout.write('BENCHMARK_RENDER_VERIFIED=true\n')
+                stdout.flush()
+                return FakeChild(environment['BASIC_ELECTRON_BENCHMARK_EXIT_SIGNAL'])
+
+            def pids(self):
+                return [] if 'child-exit' in events else [123]
+
+            def cutoff(self):
+                self.disabled_at = time.monotonic()
+                events.append('counter-cutoff')
+
+            def finish(self):
+                events.append('counter-finish')
+                return dict(instructions=100, rawCounter='100;;instructions;group;100;100.00;;\n',
+                            cutoffAcknowledged=True, source='test')
+
+        editor = next(entry for entry in report.EDITORS if entry['id'] == 'basic-electron')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(benchmark, 'ROOT', root), \
+                    patch.object(benchmark, 'Capture', FakeCapture), \
+                    patch.object(benchmark, 'visible_window', return_value={'windowId': '1', 'pid': 123,
+                                                                            'properties': 'normal'}):
+                measured = benchmark.trial(editor, 'unused', verify_render_and_exit=True)
+
+        self.assertTrue(measured['valid'])
+        self.assertTrue(measured['renderValidation']['processTreeExited'])
+        self.assertLess(events.index('counter-cutoff'), events.index('counter-finish'))
+        self.assertLess(events.index('counter-finish'), events.index('child-exit'))
+
+    def test_switch_experiment_order_is_repeatable_and_covers_each_configuration(self):
+        first = switch_experiment.execution_order()
+        self.assertEqual(first, switch_experiment.execution_order())
+        self.assertEqual(len(first), switch_experiment.ROUNDS)
+        for switch_sets in first:
+            self.assertEqual(set(switch_sets), set(switch_experiment.SWITCH_SETS))
 
     def test_main_window_type_defaults_and_rejections(self):
         mapped = 'WM_STATE(WM_STATE):\n    window state: Normal\n'
