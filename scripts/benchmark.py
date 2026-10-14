@@ -23,7 +23,13 @@ PROTOCOL = {
 
 
 def command_for(editor, home):
-    binary = str(ROOT / '.tmp/apps' / editor['id'] / editor['binary'])
+    app = ROOT / '.tmp/apps' / editor['id']
+    binary_path = app / editor['binary']
+    if not binary_path.exists() and editor.get('binaryGlob'):
+        matches = list(app.glob(editor['binaryGlob']))
+        if len(matches) == 1:
+            binary_path = matches[0]
+    binary = str(binary_path)
     id = editor['id']
     if id == 'geany':
         return ['geany', '--new-instance']

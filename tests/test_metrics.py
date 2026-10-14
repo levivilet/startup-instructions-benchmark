@@ -2,7 +2,7 @@ import copy
 import hashlib
 import json
 import os
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from pathlib import Path
 import sys
 import tempfile
@@ -12,7 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
 from counters import Capture, parse_counter
 from install import checksum, extract
 import report
-from benchmark import command_for, is_main_window
+import benchmark
+from benchmark import is_main_window
 
 
 def result(editor):
@@ -41,20 +42,26 @@ class MetricsTest(unittest.TestCase):
     def test_added_editor_launchers_use_isolated_profiles(self):
         home = Path('/tmp/startup-profile')
         entries = {entry['id']: entry for entry in report.EDITORS}
-        intellij = command_for(entries['intellij'], home)
-        self.assertEqual(intellij[0], str(report.ROOT / '.tmp/apps/intellij/bin/idea.sh'))
-        self.assertIn(f'-Didea.config.path={home / "config" / "intellij"}', intellij)
-        self.assertIn('dontReopenProjects', intellij)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            intellij_binary = root / '.tmp/apps/intellij/idea-IU-253.28294.334/bin/idea.sh'
+            intellij_binary.parent.mkdir(parents=True)
+            intellij_binary.touch()
+            with patch.object(benchmark, 'ROOT', root):
+                intellij = benchmark.command_for(entries['intellij'], home)
+                self.assertEqual(intellij[0], str(intellij_binary))
+                self.assertIn(f'-Didea.config.path={home / "config" / "intellij"}', intellij)
+                self.assertIn('dontReopenProjects', intellij)
 
-        eclipse = command_for(entries['eclipse'], home)
-        self.assertEqual(eclipse[0], str(report.ROOT / '.tmp/apps/eclipse/eclipse/eclipse'))
-        self.assertIn(str(home / 'workspace'), eclipse)
-        self.assertIn(str(home / 'config' / 'eclipse'), eclipse)
+                eclipse = benchmark.command_for(entries['eclipse'], home)
+                self.assertEqual(eclipse[0], str(root / '.tmp/apps/eclipse/eclipse/eclipse'))
+                self.assertIn(str(home / 'workspace'), eclipse)
+                self.assertIn(str(home / 'config' / 'eclipse'), eclipse)
 
-        cursor = command_for(entries['cursor'], home)
-        self.assertEqual(cursor[0], str(report.ROOT / '.tmp/apps/cursor/usr/share/cursor/cursor'))
-        self.assertIn(str(home / 'profile'), cursor)
-        self.assertIn(str(home / 'extensions'), cursor)
+                cursor = benchmark.command_for(entries['cursor'], home)
+                self.assertEqual(cursor[0], str(root / '.tmp/apps/cursor/usr/share/cursor/cursor'))
+                self.assertIn(str(home / 'profile'), cursor)
+                self.assertIn(str(home / 'extensions'), cursor)
 
     def test_main_window_type_defaults_and_rejections(self):
         mapped = 'WM_STATE(WM_STATE):\n    window state: Normal\n'
