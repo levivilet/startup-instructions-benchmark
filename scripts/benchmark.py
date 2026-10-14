@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import platform
 import subprocess
+import sys
 import tempfile
 import time
 from counters import Capture
@@ -212,6 +213,10 @@ def main():
     Path('results').mkdir(exist_ok=True)
     Path('results/results.json').write_text(json.dumps(dict(editor=editor, protocol=protocol, host=host, trials=trials), indent=2)+'\n')
     if not all(t['valid'] for t in trials):
+        for item in trials:
+            if not item['valid']:
+                print(json.dumps({key: item.get(key) for key in ('error', 'stdout', 'stderr', 'perf.log')},
+                                 indent=2), file=sys.stderr)
         raise SystemExit('invalid trials; cannot publish complete report')
 
 if __name__ == '__main__':
