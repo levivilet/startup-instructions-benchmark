@@ -1,0 +1,1506 @@
+{
+  "editor": {
+    "id": "basic-electron",
+    "name": "Basic Electron",
+    "version": "v44.3.0",
+    "archive": "electron-v44.3.0-linux-arm64.zip",
+    "url": "https://github.com/electron/electron/releases/download/v44.3.0/electron-v44.3.0-linux-arm64.zip",
+    "sha256": "c11fde221c08e9bffdb3336579f09bd934a009862f509af5033616876741be24",
+    "binary": "electron",
+    "app": "basic-electron"
+  },
+  "protocol": {
+    "version": 2,
+    "metric": "retired hardware instructions (user and kernel)",
+    "boundary": "launch through first visible normal main window",
+    "accounting": "per-CPU cgroup; includes all descendants, including detached and exited tasks",
+    "profile": "fresh HOME and XDG directories every trial, no bootstrap launch",
+    "cache": "warm OS filesystem caches permitted; application profiles always fresh",
+    "pollSeconds": 0.02,
+    "timeoutSeconds": 120,
+    "launcher": "includes child cgroup-entry, privilege drop and exec overhead; controller and desktop excluded",
+    "cutoff": "perf disable acknowledgement before shutdown; includes polling/control latency",
+    "electronSwitchSet": "disable-background-networking",
+    "extraElectronSwitches": [
+      "--disable-background-networking"
+    ],
+    "renderValidationAfterCutoff": true
+  },
+  "host": {
+    "machine": "aarch64",
+    "kernel": "6.17.0-1022-azure",
+    "cpuinfo": "processor\t: 0\nBogoMIPS\t: 2000.00\nFeatures\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16\nCPU implementer\t: 0x41\nCPU architecture: 8\nCPU variant\t: 0x0\nCPU part\t: 0xd49\nCPU revision\t: 0\n\nprocessor\t: 1\nBogoMIPS\t: 2000.00\nFeatures\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16\nCPU implementer\t: 0x41\nCPU architecture: 8\nCPU variant\t: 0x0\nCPU part\t: 0xd49\nCPU revision\t: 0\n\nprocessor\t: 2\nBogoMIPS\t: 2000.00\nFeatures\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16\nCPU implementer\t: 0x41\nCPU architecture: 8\nCPU variant\t: 0x0\nCPU part\t: 0xd49\nCPU revision\t: 0\n\nprocessor\t: 3\nBogoMIPS\t: 2000.00\nFeatures\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16\nCPU implementer\t: 0x41\nCPU architecture: 8\nCPU variant\t: 0x0\nCPU part\t: 0xd49\nCPU revision\t: 0\n\n",
+    "perf": "perf version 6.8.12",
+    "eventSources": [
+      "armv8_pmuv3_0",
+      "breakpoint",
+      "kprobe",
+      "software",
+      "tracepoint",
+      "uprobe"
+    ],
+    "paranoid": "-1",
+    "editorUid": 1001,
+    "runUrl": "https://github.com/levivilet/startup-instructions-benchmark/actions/runs/38635519823",
+    "commit": "a4329b0d028e10fb4df46db4daa64c08f42496a6"
+  },
+  "trials": [
+    {
+      "instructions": 1740813928,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1740813928;;instructions;startup-c1c5aa62fb7543638094941eeb2d1d61;404212584;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 4426,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 4426\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.2657556259999865,
+      "launchToCutoffSeconds": 0.26623212100003,
+      "pidsAtCutoff": [
+        4426,
+        4429,
+        4430,
+        4464,
+        4467,
+        4483
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 1
+    },
+    {
+      "instructions": 1732126758,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1732126758;;instructions;startup-5a064539d1e2469a9a229aeed70254b4;390112704;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 4509,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 4509\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.2605159990000061,
+      "launchToCutoffSeconds": 0.2607737190000421,
+      "pidsAtCutoff": [
+        4509,
+        4512,
+        4513,
+        4548,
+        4550,
+        4563
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 2
+    },
+    {
+      "instructions": 1796658299,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1796658299;;instructions;startup-685b05e723e94c4ea5c2c051287299f5;418719888;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 4590,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 4590\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.3059331689999567,
+      "launchToCutoffSeconds": 0.30618068899997297,
+      "pidsAtCutoff": [
+        4590,
+        4593,
+        4594,
+        4629,
+        4632,
+        4646
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 3
+    },
+    {
+      "instructions": 1424544730,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1424544730;;instructions;startup-ba5da1d0759845fcbdd9bef7b1e7ce3f;288447856;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 5693,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 5693\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.21040887499998462,
+      "launchToCutoffSeconds": 0.2107171269999526,
+      "pidsAtCutoff": [
+        5693,
+        5696,
+        5697,
+        5733,
+        5737,
+        5750
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 4
+    },
+    {
+      "instructions": 1729972194,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1729972194;;instructions;startup-3c75958d0abf4fe9a02a30c6fa1fa0f1;394213888;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 5772,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 5772\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.2920651069999849,
+      "launchToCutoffSeconds": 0.2923244840000052,
+      "pidsAtCutoff": [
+        5772,
+        5775,
+        5776,
+        5812,
+        5815,
+        5830
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 5
+    },
+    {
+      "instructions": 1589567247,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1589567247;;instructions;startup-0bb04e4ba00c4b8fa232a152f817198d;339088816;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "6291459",
+        "pid": 5857,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 5857\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.23882089099998893,
+      "launchToCutoffSeconds": 0.24017052400000694,
+      "pidsAtCutoff": [
+        5857,
+        5860,
+        5861,
+        5896,
+        5898,
+        5918
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 6
+    },
+    {
+      "instructions": 1736272447,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1736272447;;instructions;startup-36b707d04fe040a4a0a40cffabfec1d1;399330992;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 6200,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 6200\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.24460641299998542,
+      "launchToCutoffSeconds": 0.24549095700001544,
+      "pidsAtCutoff": [
+        6200,
+        6203,
+        6204,
+        6238,
+        6242,
+        6254
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 7
+    },
+    {
+      "instructions": 1737329421,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1737329421;;instructions;startup-37fb796ed19a4f9d8750c9ece634abd9;402577744;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 6282,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 6282\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.28538498399996115,
+      "launchToCutoffSeconds": 0.28564963200000193,
+      "pidsAtCutoff": [
+        6282,
+        6285,
+        6286,
+        6320,
+        6323,
+        6337
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 8
+    },
+    {
+      "instructions": 1752749786,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1752749786;;instructions;startup-1a2ea785ca6649cfb7cec5c93f14bef0;417437688;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 6364,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 6364\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.29537277200000744,
+      "launchToCutoffSeconds": 0.29563060399999586,
+      "pidsAtCutoff": [
+        6364,
+        6367,
+        6368,
+        6401,
+        6403,
+        6419
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 9
+    },
+    {
+      "instructions": 1755575148,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1755575148;;instructions;startup-3e7e471576e14ab0adef97052e50ca27;419921352;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 8183,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 8183\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.2862985149999986,
+      "launchToCutoffSeconds": 0.28696145600002865,
+      "pidsAtCutoff": [
+        8183,
+        8186,
+        8187,
+        8220,
+        8222,
+        8238
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 10
+    },
+    {
+      "instructions": 1791419121,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1791419121;;instructions;startup-ff4a90d31a564c32bbcb20544f8dc378;438558048;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 8265,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 8265\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.3224506870000141,
+      "launchToCutoffSeconds": 0.3227163839999889,
+      "pidsAtCutoff": [
+        8265,
+        8268,
+        8269,
+        8304,
+        8307,
+        8323
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 11
+    },
+    {
+      "instructions": 1737887888,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1737887888;;instructions;startup-f8910541e6b741dea8312d9bb6edc323;404526552;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 8352,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 8352\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.26341195499998094,
+      "launchToCutoffSeconds": 0.26367109900002106,
+      "pidsAtCutoff": [
+        8352,
+        8356,
+        8357,
+        8392,
+        8394,
+        8407
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 12
+    },
+    {
+      "instructions": 1565210436,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1565210436;;instructions;startup-323420ade41f477084ccc15406cb4b03;337746192;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 9191,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 9191\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.2190166960000397,
+      "launchToCutoffSeconds": 0.2208872350000206,
+      "pidsAtCutoff": [
+        9191,
+        9194,
+        9195,
+        9229,
+        9233,
+        9253
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 13
+    },
+    {
+      "instructions": 1518447832,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1518447832;;instructions;startup-05099166d9e344768d73cd62ba7f9cd2;327231736;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "6291459",
+        "pid": 9275,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 9275\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.22693801200000507,
+      "launchToCutoffSeconds": 0.22778799899998603,
+      "pidsAtCutoff": [
+        9275,
+        9278,
+        9279,
+        9312,
+        9317,
+        9331
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 14
+    },
+    {
+      "instructions": 1532500402,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1532500402;;instructions;startup-6b491e2300de4e53b4ea107f6fd6a231;327739392;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 9356,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 9356\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.22747507700000824,
+      "launchToCutoffSeconds": 0.22905567199995858,
+      "pidsAtCutoff": [
+        9356,
+        9359,
+        9360,
+        9395,
+        9397,
+        9416
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 15
+    },
+    {
+      "instructions": 1754947888,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1754947888;;instructions;startup-aab9e651af014d388516a0c9a7f91a5a;416551832;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 10945,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 10945\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.2893462410000325,
+      "launchToCutoffSeconds": 0.2896190970000134,
+      "pidsAtCutoff": [
+        10945,
+        10948,
+        10949,
+        10983,
+        10985,
+        10999
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 16
+    },
+    {
+      "instructions": 1559037918,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1559037918;;instructions;startup-ba5e2ccad7624e6a8ce2872ab21a1471;333052520;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 11026,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 11026\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.2377265019999868,
+      "launchToCutoffSeconds": 0.23824656700003288,
+      "pidsAtCutoff": [
+        11026,
+        11029,
+        11030,
+        11066,
+        11068,
+        11082
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 17
+    },
+    {
+      "instructions": 1735075208,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1735075208;;instructions;startup-0f231d8bcfb547fa8a5d560db6c7d508;404817144;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "6291459",
+        "pid": 11108,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 11108\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.255189506000022,
+      "launchToCutoffSeconds": 0.2555312279999953,
+      "pidsAtCutoff": [
+        11108,
+        11111,
+        11112,
+        11146,
+        11148,
+        11163
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 18
+    },
+    {
+      "instructions": 1768331439,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1768331439;;instructions;startup-ca8473b029044d50b055c6d61392eeb7;433802568;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 11439,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 11439\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.33789264999995794,
+      "launchToCutoffSeconds": 0.3381410659999915,
+      "pidsAtCutoff": [
+        11439,
+        11442,
+        11443,
+        11477,
+        11480,
+        11497
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 19
+    },
+    {
+      "instructions": 1703421179,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1703421179;;instructions;startup-972837cb7ed346f0a61601dc7b51d6ff;394192336;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 11527,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 11527\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.25134446300000945,
+      "launchToCutoffSeconds": 0.25281274200000325,
+      "pidsAtCutoff": [
+        11527,
+        11530,
+        11531,
+        11564,
+        11566,
+        11581
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 20
+    },
+    {
+      "instructions": 1559860868,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1559860868;;instructions;startup-cf5b0e3dc1014a16b2617d83e170e3db;333440416;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "6291459",
+        "pid": 11608,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 11608\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.2156956719999812,
+      "launchToCutoffSeconds": 0.2163047159999678,
+      "pidsAtCutoff": [
+        11608,
+        11611,
+        11612,
+        11647,
+        11649,
+        11664
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 21
+    },
+    {
+      "instructions": 1581478818,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1581478818;;instructions;startup-c9ee1b22215845b88d984a366fe055f2;349165672;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 12687,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 12687\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.23197151000005078,
+      "launchToCutoffSeconds": 0.23327509200004215,
+      "pidsAtCutoff": [
+        12687,
+        12690,
+        12691,
+        12726,
+        12732,
+        12744
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 22
+    },
+    {
+      "instructions": 1676860358,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1676860358;;instructions;startup-0c8e8892310b48ce8c742c1256358858;377842952;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 12769,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 12769\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.27903876799996397,
+      "launchToCutoffSeconds": 0.2793701059999876,
+      "pidsAtCutoff": [
+        12769,
+        12772,
+        12773,
+        12810,
+        12812,
+        12827
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 23
+    },
+    {
+      "instructions": 1568876305,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1568876305;;instructions;startup-d108632a176341cab56c8e31f4e245ac;348173216;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 12853,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 12853\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.2333146380000244,
+      "launchToCutoffSeconds": 0.23377525900002638,
+      "pidsAtCutoff": [
+        12853,
+        12856,
+        12857,
+        12892,
+        12894,
+        12909
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 24
+    },
+    {
+      "instructions": 1459633826,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1459633826;;instructions;startup-194df8d7f7db4eab80aeaa4f0424f90d;312851168;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 14174,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 14174\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.20796027200003664,
+      "launchToCutoffSeconds": 0.20892224700003226,
+      "pidsAtCutoff": [
+        14174,
+        14177,
+        14178,
+        14212,
+        14215,
+        14230
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 25
+    },
+    {
+      "instructions": 1451615609,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1451615609;;instructions;startup-3f4d0aad84de4f4790db490481353081;312178464;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 14250,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 14250\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.1965092719999575,
+      "launchToCutoffSeconds": 0.19744425499999352,
+      "pidsAtCutoff": [
+        14250,
+        14253,
+        14254,
+        14287,
+        14291,
+        14304
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 26
+    },
+    {
+      "instructions": 1787102281,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1787102281;;instructions;startup-31ad3b2bf0514654bba66fcafe17f10c;423309296;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 14326,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 14326\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.319001462000017,
+      "launchToCutoffSeconds": 0.3195786010000461,
+      "pidsAtCutoff": [
+        14326,
+        14329,
+        14330,
+        14364,
+        14369,
+        14382
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 27
+    },
+    {
+      "instructions": 1687755321,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1687755321;;instructions;startup-eff7b8e7c2cd43879f376c20c6fac59c;380839336;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 15681,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 15681\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.24632016700002168,
+      "launchToCutoffSeconds": 0.24787821799998255,
+      "pidsAtCutoff": [
+        15681,
+        15684,
+        15685,
+        15720,
+        15722,
+        15737
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 28
+    },
+    {
+      "instructions": 1730073094,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1730073094;;instructions;startup-1a36492eebba4ea99225bd60a35ab6c2;394487128;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "4194307",
+        "pid": 15761,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"Basic Electron\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 15761\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.25912284900005034,
+      "launchToCutoffSeconds": 0.26019632100002354,
+      "pidsAtCutoff": [
+        15761,
+        15764,
+        15765,
+        15800,
+        15802,
+        15818
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 29
+    },
+    {
+      "instructions": 1583416794,
+      "rawCounter": "Events disabled\nEvents enabled\nEvents disabled\n1583416794;;instructions;startup-0d4404cfcbeb431b92476c028a9157f3;340106656;100.00;;\n",
+      "source": "perf stat instructions, per-CPU cgroup",
+      "cutoffAcknowledged": true,
+      "valid": true,
+      "readiness": {
+        "windowId": "6291459",
+        "pid": 15843,
+        "properties": "_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL\nWM_NAME(UTF8_STRING) = \"startup-baseline\"\nWM_CLASS(STRING) = \"startup-baseline\", \"startup-baseline\"\n_NET_WM_PID(CARDINAL) = 15843\nWM_TRANSIENT_FOR:  not found.\nWM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x0\n"
+      },
+      "launchToWindowSeconds": 0.21805981299996802,
+      "launchToCutoffSeconds": 0.22097651499996118,
+      "pidsAtCutoff": [
+        15843,
+        15846,
+        15847,
+        15882,
+        15884,
+        15899
+      ],
+      "command": [
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/.tmp/apps/basic-electron/electron",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--ozone-platform=x11",
+        "--disable-background-networking",
+        "/home/runner/work/startup-instructions-benchmark/startup-instructions-benchmark/basic-electron",
+        "--benchmark-verify-render"
+      ],
+      "renderValidation": {
+        "expectedTitle": "Basic Electron",
+        "expectedHeading": "Basic Electron",
+        "verified": true,
+        "exitCode": 0,
+        "processTreeExited": true,
+        "evidence": "BENCHMARK_RENDER_VERIFIED=true"
+      },
+      "repeat": 30
+    }
+  ],
+  "experiment": {
+    "rounds": 10,
+    "trialsPerBlock": 3,
+    "orderSeed": 4403,
+    "batches": [
+      {
+        "round": 1,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 1,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 1,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 1,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 1,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 2,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 2,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 2,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 2,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 2,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 3,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 3,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 3,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 3,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 3,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 4,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 4,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 4,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 4,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 4,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 5,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 5,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 5,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 5,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 5,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 6,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 6,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 6,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 6,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 6,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 7,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 7,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 7,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 7,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 7,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 8,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 8,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 8,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 8,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 8,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 9,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 9,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 9,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 9,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 9,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 10,
+        "switchSet": "disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 10,
+        "switchSet": "disable-http-cache",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 10,
+        "switchSet": "disable-http-cache+disable-http2",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 10,
+        "switchSet": "disable-background-networking",
+        "trialsPerBlock": 3
+      },
+      {
+        "round": 10,
+        "switchSet": "baseline",
+        "trialsPerBlock": 3
+      }
+    ]
+  }
+}
