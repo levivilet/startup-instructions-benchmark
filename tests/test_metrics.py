@@ -83,10 +83,18 @@ class MetricsTest(unittest.TestCase):
         class FakeChild:
             returncode = None
 
+            def __init__(self, exit_signal):
+                self.exit_signal = Path(exit_signal)
+
             def wait(self, timeout=None):
+                self.assert_exit_signal()
                 self.returncode = 0
                 events.append('child-exit')
                 return 0
+
+            def assert_exit_signal(self):
+                if not self.exit_signal.exists():
+                    raise AssertionError('benchmark exit signal was not created before app exit')
 
         class FakeCapture:
             disabled_at = None
@@ -104,7 +112,7 @@ class MetricsTest(unittest.TestCase):
                 self.environment = environment
                 stdout.write('BENCHMARK_RENDER_VERIFIED=true\n')
                 stdout.flush()
-                return FakeChild()
+                return FakeChild(environment['BASIC_ELECTRON_BENCHMARK_EXIT_SIGNAL'])
 
             def pids(self):
                 return [] if 'child-exit' in events else [123]
