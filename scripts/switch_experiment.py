@@ -45,7 +45,7 @@ def main():
                 '--preserve-env=DISPLAY,XAUTHORITY,BENCHMARK_RUN_URL,BENCHMARK_COMMIT',
                 'python3', 'scripts/benchmark.py', '--editor', 'basic-electron',
                 '--perf', perf, '--repeats', str(TRIALS_PER_BLOCK),
-                '--switch-set', switch_set,
+                '--switch-set', switch_set, '--verify-render-and-exit',
             ]
             subprocess.run(command, cwd=ROOT, check=True)
             path = results_dir / 'results.json'
@@ -54,6 +54,11 @@ def main():
             if len(data.get('trials', [])) != TRIALS_PER_BLOCK or not all(
                     trial.get('valid') is True for trial in data['trials']):
                 raise ValueError(f'{switch_set}: invalid result block')
+            if not all(trial.get('renderValidation', {}).get('verified') is True and
+                       trial['renderValidation'].get('exitCode') == 0 and
+                       trial['renderValidation'].get('processTreeExited') is True
+                       for trial in data['trials']):
+                raise ValueError(f'{switch_set}: render or clean-exit verification failed')
 
             if switch_set not in results:
                 results[switch_set] = data

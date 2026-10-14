@@ -56,6 +56,11 @@ including the exact command, raw per-trial counter output, host metadata, window
 evidence and fresh-profile protocol. Ten blocks of three trials run in seeded,
 shuffled configuration order; the seed and full order are stored with each
 result. Filesystem caches may warm across configurations, as in the main benchmark.
+The [v44.3.0 ARM64 results and raw trials](reports/electron-switch-experiment-v44.3.0-arm64.md)
+record the measured comparison and its limitations.
+After each instruction cutoff, the experiment also verifies the expected document
+title and heading and requires the Electron process tree to exit with status 0;
+this post-cutoff work does not affect the measured count.
 
 Electron v44.3.0 documents `--disable-http-cache` and `--disable-http2` as
 supported switches. Its switch documentation says unsupported switches have no

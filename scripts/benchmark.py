@@ -30,7 +30,7 @@ ELECTRON_SWITCH_SETS = {
 }
 
 
-def command_for(editor, home, extra_switches=()):
+def command_for(editor, home, extra_switches=(), verify_render_and_exit=False):
     app = ROOT / '.tmp/apps' / editor['id']
     binary_path = app / editor['binary']
     if not binary_path.exists() and editor.get('binaryGlob'):
@@ -64,6 +64,8 @@ def command_for(editor, home, extra_switches=()):
         args += extra_switches
     if id == 'basic-electron':
         args += [str(ROOT / 'basic-electron')]
+        if verify_render_and_exit:
+            args += ['--benchmark-verify-render']
     return [binary, *args]
 
 
@@ -106,7 +108,7 @@ def diagnostics(home):
     return dict(windowTree=windows, windowProperties=properties, editorLogs=logs, processes=processes)
 
 
-def trial(editor, perf, extra_switches=()):
+def trial(editor, perf, extra_switches=(), verify_render_and_exit=False):
     with tempfile.TemporaryDirectory(prefix='startup-trial-') as directory:
         d = Path(directory)
         home = d / 'home'
@@ -124,7 +126,7 @@ def trial(editor, perf, extra_switches=()):
             uid, gid = int(env['SUDO_UID']), int(env['SUDO_GID'])
             for path in [d, home, *home.iterdir()]:
                 os.chown(path, uid, gid)
-        command = command_for(editor, home, extra_switches)
+        command = command_for(editor, home, extra_switches, verify_render_and_exit)
         try:
             with Capture(perf, d) as capture:
                 with (d / 'stdout').open('w') as stdout, (d / 'stderr').open('w') as stderr:
@@ -139,9 +141,30 @@ def trial(editor, perf, extra_switches=()):
                             observed = time.monotonic()
                             capture.cutoff()
                             result = capture.finish()
+                            render_validation = None
+                            if verify_render_and_exit:
+                                child.wait(timeout=10)
+                                stdout_text = (d / 'stdout').read_text(errors='replace')
+                                marker = 'BENCHMARK_RENDER_VERIFIED=true'
+                                if child.returncode != 0 or marker not in stdout_text:
+                                    raise RuntimeError('Basic Electron did not render the expected page and exit cleanly')
+                                exit_deadline = time.monotonic() + 5
+                                while capture.pids():
+                                    if time.monotonic() >= exit_deadline:
+                                        raise RuntimeError('Basic Electron child processes remained after app quit')
+                                    time.sleep(.01)
+                                render_validation = {
+                                    'expectedTitle': 'Basic Electron',
+                                    'expectedHeading': 'Basic Electron',
+                                    'verified': True,
+                                    'exitCode': child.returncode,
+                                    'processTreeExited': True,
+                                    'evidence': marker,
+                                }
                             result.update(valid=True, readiness=window, launchToWindowSeconds=observed-start,
                                           launchToCutoffSeconds=capture.disabled_at-start,
-                                          pidsAtCutoff=pids, command=command)
+                                          pidsAtCutoff=pids, command=command,
+                                          renderValidation=render_validation)
                             break
                         if time.monotonic() - start > PROTOCOL['timeoutSeconds']:
                             failure_diagnostics = diagnostics(home)
@@ -163,9 +186,12 @@ def main():
     parser.add_argument('--perf', required=True)
     parser.add_argument('--repeats', type=int, default=3)
     parser.add_argument('--switch-set', choices=ELECTRON_SWITCH_SETS, default='baseline')
+    parser.add_argument('--verify-render-and-exit', action='store_true')
     args = parser.parse_args()
     if args.repeats < 3:
         parser.error('at least three trials required')
+    if args.verify_render_and_exit and args.editor != 'basic-electron':
+        parser.error('--verify-render-and-exit only applies to Basic Electron')
     editor = next(e for e in json.loads((ROOT / 'config/editors.lock.json').read_text()) if e['id'] == args.editor)
     host = {'machine': platform.machine(), 'kernel': platform.release(), 'cpuinfo': Path('/proc/cpuinfo').read_text(),
             'perf': subprocess.check_output([args.perf, '--version'], text=True).strip(),
@@ -179,8 +205,9 @@ def main():
         host['packageVersion'] = subprocess.check_output(['dpkg-query', '-W', '-f=${Version}', editor['package']], text=True)
     extra_switches = ELECTRON_SWITCH_SETS[args.switch_set]
     protocol = {**PROTOCOL, 'electronSwitchSet': args.switch_set,
-                'extraElectronSwitches': extra_switches}
-    trials = [dict(trial(editor, args.perf, extra_switches), repeat=i+1)
+                'extraElectronSwitches': extra_switches,
+                'renderValidationAfterCutoff': args.verify_render_and_exit}
+    trials = [dict(trial(editor, args.perf, extra_switches, args.verify_render_and_exit), repeat=i+1)
               for i in range(args.repeats)]
     Path('results').mkdir(exist_ok=True)
     Path('results/results.json').write_text(json.dumps(dict(editor=editor, protocol=protocol, host=host, trials=trials), indent=2)+'\n')

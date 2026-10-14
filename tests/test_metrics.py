@@ -70,9 +70,10 @@ class MetricsTest(unittest.TestCase):
         switches = benchmark.ELECTRON_SWITCH_SETS['disable-http-cache+disable-http2']
         with tempfile.TemporaryDirectory() as directory:
             with patch.object(benchmark, 'ROOT', Path(directory)):
-                command = benchmark.command_for(editor, home, switches)
+                command = benchmark.command_for(editor, home, switches, verify_render_and_exit=True)
         app_argument = command.index(str(Path(directory) / 'basic-electron'))
         self.assertEqual(command[command.index('--disable-gpu') + 2:app_argument], switches)
+        self.assertEqual(command[app_argument + 1], '--benchmark-verify-render')
         self.assertEqual(benchmark.ELECTRON_SWITCH_SETS['baseline'], [])
 
     def test_switch_experiment_order_is_repeatable_and_covers_each_configuration(self):
