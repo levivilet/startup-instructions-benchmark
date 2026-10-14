@@ -46,6 +46,36 @@
     "app": "basic-electron"
   },
   {
+    "id": "intellij",
+    "name": "IntelliJ IDEA Community",
+    "version": "2025.3",
+    "archive": "idea-2025.3-aarch64.tar.gz",
+    "url": "https://download.jetbrains.com/idea/idea-2025.3-aarch64.tar.gz",
+    "sha256": "07c83a9d219fa8945b6accb7f3284658553e5c812053a97621b8f84bc031e57c",
+    "binary": "bin/idea.sh",
+    "binaryGlob": "idea-*/bin/idea.sh"
+  },
+  {
+    "id": "eclipse",
+    "name": "Eclipse IDE for Java Developers",
+    "version": "2026-09 R",
+    "archive": "eclipse-java-2026-09-R-linux-gtk-aarch64.tar.gz",
+    "url": "https://download.eclipse.org/technology/epp/downloads/release/2026-09/R/eclipse-java-2026-09-R-linux-gtk-aarch64.tar.gz",
+    "checksum": "c95453e0170efff6294a746b53e2f83f857aeb2309dbc20b933de18664f7d7e717f071a08a96d46797c2191014e1c8505da8370e45fff83a91396636d29a3091",
+    "checksumAlgorithm": "sha512",
+    "binary": "eclipse/eclipse"
+  },
+  {
+    "id": "cursor",
+    "name": "Cursor",
+    "version": "3.24.18",
+    "archive": "cursor_3.24.18_arm64.deb",
+    "url": "https://downloads.cursor.com/production/be4c9e5350d77747b42cd467cbd3370a753d464b/linux/arm64/deb/arm64/deb/cursor_3.24.18_arm64.deb",
+    "sha256": "70504f23a8fef6f2f8704a035e9303d6192761f5d11fea7c78cc91ad7d74fedc",
+    "architecture": "arm64",
+    "binary": "usr/share/cursor/cursor"
+  },
+  {
     "id": "geany",
     "name": "Geany",
     "version": "Ubuntu 24.04 package",
