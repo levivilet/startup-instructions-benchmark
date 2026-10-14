@@ -79,7 +79,7 @@ def main():
         archive = target / entry["archive"]
         download(entry, archive)
         extract(entry, archive, target / editor_id)
-        print(f"Verified {editor_id} {entry['sha256']}", flush=True)
+        print(f"Verified {editor_id} {entry.get('checksum', entry.get('sha256'))}", flush=True)
 
 
 if __name__ == "__main__":
