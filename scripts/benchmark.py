@@ -21,8 +21,16 @@ PROTOCOL = {
     'cutoff': 'perf disable acknowledgement before shutdown; includes polling/control latency',
 }
 
+ELECTRON_SWITCH_SETS = {
+    'baseline': [],
+    'disable-background-networking': ['--disable-background-networking'],
+    'disable-http-cache': ['--disable-http-cache'],
+    'disable-http2': ['--disable-http2'],
+    'disable-http-cache+disable-http2': ['--disable-http-cache', '--disable-http2'],
+}
 
-def command_for(editor, home):
+
+def command_for(editor, home, extra_switches=()):
     app = ROOT / '.tmp/apps' / editor['id']
     binary_path = app / editor['binary']
     if not binary_path.exists() and editor.get('binaryGlob'):
@@ -52,6 +60,8 @@ def command_for(editor, home):
                  '-configuration', str(home / 'config' / 'eclipse')]
     if id == 'lapce':
         args += ['--new', '--wait']
+    if id == 'basic-electron':
+        args += extra_switches
     if id == 'basic-electron':
         args += [str(ROOT / 'basic-electron')]
     return [binary, *args]
@@ -96,7 +106,7 @@ def diagnostics(home):
     return dict(windowTree=windows, windowProperties=properties, editorLogs=logs, processes=processes)
 
 
-def trial(editor, perf):
+def trial(editor, perf, extra_switches=()):
     with tempfile.TemporaryDirectory(prefix='startup-trial-') as directory:
         d = Path(directory)
         home = d / 'home'
@@ -114,7 +124,7 @@ def trial(editor, perf):
             uid, gid = int(env['SUDO_UID']), int(env['SUDO_GID'])
             for path in [d, home, *home.iterdir()]:
                 os.chown(path, uid, gid)
-        command = command_for(editor, home)
+        command = command_for(editor, home, extra_switches)
         try:
             with Capture(perf, d) as capture:
                 with (d / 'stdout').open('w') as stdout, (d / 'stderr').open('w') as stderr:
@@ -152,6 +162,7 @@ def main():
     parser.add_argument('--editor', required=True)
     parser.add_argument('--perf', required=True)
     parser.add_argument('--repeats', type=int, default=3)
+    parser.add_argument('--switch-set', choices=ELECTRON_SWITCH_SETS, default='baseline')
     args = parser.parse_args()
     if args.repeats < 3:
         parser.error('at least three trials required')
@@ -166,9 +177,13 @@ def main():
         raise SystemExit('requires Linux ARM64')
     if editor.get('package'):
         host['packageVersion'] = subprocess.check_output(['dpkg-query', '-W', '-f=${Version}', editor['package']], text=True)
-    trials = [dict(trial(editor, args.perf), repeat=i+1) for i in range(args.repeats)]
+    extra_switches = ELECTRON_SWITCH_SETS[args.switch_set]
+    protocol = {**PROTOCOL, 'electronSwitchSet': args.switch_set,
+                'extraElectronSwitches': extra_switches}
+    trials = [dict(trial(editor, args.perf, extra_switches), repeat=i+1)
+              for i in range(args.repeats)]
     Path('results').mkdir(exist_ok=True)
-    Path('results/results.json').write_text(json.dumps(dict(editor=editor, protocol=PROTOCOL, host=host, trials=trials), indent=2)+'\n')
+    Path('results/results.json').write_text(json.dumps(dict(editor=editor, protocol=protocol, host=host, trials=trials), indent=2)+'\n')
     if not all(t['valid'] for t in trials):
         raise SystemExit('invalid trials; cannot publish complete report')
 

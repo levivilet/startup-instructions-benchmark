@@ -63,6 +63,17 @@ class MetricsTest(unittest.TestCase):
                 self.assertIn(str(home / 'profile'), cursor)
                 self.assertIn(str(home / 'extensions'), cursor)
 
+    def test_electron_switch_sets_are_applied_before_app_argument(self):
+        home = Path('/tmp/startup-profile')
+        editor = next(entry for entry in report.EDITORS if entry['id'] == 'basic-electron')
+        switches = benchmark.ELECTRON_SWITCH_SETS['disable-http-cache+disable-http2']
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(benchmark, 'ROOT', Path(directory)):
+                command = benchmark.command_for(editor, home, switches)
+        app_argument = command.index(str(Path(directory) / 'basic-electron'))
+        self.assertEqual(command[command.index('--disable-gpu') + 2:app_argument], switches)
+        self.assertEqual(benchmark.ELECTRON_SWITCH_SETS['baseline'], [])
+
     def test_main_window_type_defaults_and_rejections(self):
         mapped = 'WM_STATE(WM_STATE):\n    window state: Normal\n'
         missing = '_NET_WM_WINDOW_TYPE:  not found.\nWM_TRANSIENT_FOR:  not found.\n'
