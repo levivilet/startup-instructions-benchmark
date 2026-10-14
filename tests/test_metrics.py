@@ -1,15 +1,18 @@
 import copy
+import hashlib
 import json
 import os
 from unittest.mock import Mock
 from pathlib import Path
 import sys
 import tempfile
+import tarfile
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
 from counters import Capture, parse_counter
+from install import checksum, extract
 import report
-from benchmark import is_main_window
+from benchmark import command_for, is_main_window
 
 
 def result(editor):
@@ -21,6 +24,38 @@ def result(editor):
 
 
 class MetricsTest(unittest.TestCase):
+    def test_installer_supports_sha512_and_nested_launcher(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'idea.sh'
+            source.write_text('#!/bin/sh\n')
+            archive = root / 'idea.tar.gz'
+            with tarfile.open(archive, 'w:gz') as tar:
+                tar.add(source, arcname='idea-IU/bin/idea.sh')
+            self.assertEqual(checksum(archive, 'sha512'), hashlib.sha512(archive.read_bytes()).hexdigest())
+            destination = root / 'extracted'
+            extract({'id': 'intellij', 'binary': 'bin/idea.sh', 'binaryGlob': 'idea-*/bin/idea.sh'},
+                    archive, destination)
+            self.assertTrue((destination / 'idea-IU/bin/idea.sh').stat().st_mode & 0o111)
+
+    def test_added_editor_launchers_use_isolated_profiles(self):
+        home = Path('/tmp/startup-profile')
+        entries = {entry['id']: entry for entry in report.EDITORS}
+        intellij = command_for(entries['intellij'], home)
+        self.assertEqual(intellij[0], str(report.ROOT / '.tmp/apps/intellij/bin/idea.sh'))
+        self.assertIn(f'-Didea.config.path={home / "config" / "intellij"}', intellij)
+        self.assertIn('dontReopenProjects', intellij)
+
+        eclipse = command_for(entries['eclipse'], home)
+        self.assertEqual(eclipse[0], str(report.ROOT / '.tmp/apps/eclipse/eclipse/eclipse'))
+        self.assertIn(str(home / 'workspace'), eclipse)
+        self.assertIn(str(home / 'config' / 'eclipse'), eclipse)
+
+        cursor = command_for(entries['cursor'], home)
+        self.assertEqual(cursor[0], str(report.ROOT / '.tmp/apps/cursor/usr/share/cursor/cursor'))
+        self.assertIn(str(home / 'profile'), cursor)
+        self.assertIn(str(home / 'extensions'), cursor)
+
     def test_main_window_type_defaults_and_rejections(self):
         mapped = 'WM_STATE(WM_STATE):\n    window state: Normal\n'
         missing = '_NET_WM_WINDOW_TYPE:  not found.\nWM_TRANSIENT_FOR:  not found.\n'

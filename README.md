@@ -36,11 +36,14 @@ checked-in versions and SHA-256 hashes verified before extraction.
 
 ## Initial ARM matrix
 
-The checked-in matrix includes LVCE Editor, VS Code, Zed, Lapce, Geany, and Basic
-Electron (an empty-window baseline). It is a subset of the reference idle CPU chart.
-Cursor, Eclipse, IntelliJ IDEA, Atom and Theia are outside this initial artifact
-matrix, not zero-valued results. This does not claim those editors lack ARM support.
-The full six-editor matrix must succeed for a report to be considered complete.
+The checked-in matrix includes LVCE Editor, VS Code, Zed, Lapce, Geany, Basic
+Electron (an empty-window baseline), IntelliJ IDEA Community, Eclipse IDE for Java
+Developers, and Cursor. Atom and Theia are excluded because verified native Linux
+ARM64 artifacts are unavailable: [Atom's final official release](https://github.com/atom/atom/releases/tag/v1.60.0)
+publishes only AMD64 Linux packages, while [Theia's current Linux metadata](https://download.eclipse.org/theia/ide/latest/linux/latest-linux.yml)
+does not identify an ARM64 build and its [Snap stable channel](https://api.snapcraft.io/v2/snaps/info/theia-ide)
+lists only amd64. These exclusions are not zero-valued results. The full
+nine-editor matrix must succeed for a report to be considered complete.
 
 ## Validation and publication
 

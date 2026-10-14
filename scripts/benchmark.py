@@ -28,12 +28,22 @@ def command_for(editor, home):
     if id == 'geany':
         return ['geany', '--new-instance']
     args = []
-    if id in {'lvce', 'vscode', 'basic-electron'}:
+    if id in {'lvce', 'vscode', 'basic-electron', 'cursor'}:
         args += ['--no-sandbox', '--disable-gpu', '--ozone-platform=x11']
-    if id in {'lvce', 'vscode', 'zed'}:
+    if id in {'lvce', 'vscode', 'zed', 'cursor'}:
         args += ['--user-data-dir', str(home / 'profile')]
-    if id == 'vscode':
+    if id in {'vscode', 'cursor'}:
         args += ['--disable-extensions', '--skip-welcome', '--skip-release-notes', '--disable-workspace-trust']
+    if id == 'cursor':
+        args += ['--extensions-dir', str(home / 'extensions')]
+    if id == 'intellij':
+        args += [f'-Didea.config.path={home / "config" / "intellij"}',
+                 f'-Didea.system.path={home / "cache" / "intellij"}',
+                 f'-Didea.plugins.path={home / "data" / "intellij" / "plugins"}',
+                 f'-Didea.log.path={home / "state" / "intellij"}', 'dontReopenProjects']
+    if id == 'eclipse':
+        args += ['-nosplash', '-consoleLog', '-data', str(home / 'workspace'),
+                 '-configuration', str(home / 'config' / 'eclipse')]
     if id == 'lapce':
         args += ['--new', '--wait']
     if id == 'basic-electron':

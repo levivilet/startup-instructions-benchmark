@@ -162,7 +162,7 @@ th{{background:#e8f1fa}}code{{overflow-wrap:anywhere}}a{{color:#0759a5}}
 </style></head><body><main><h1>Startup instructions benchmark</h1>
 <p>Latest complete run: <a href="{safe_run_url}">GitHub Actions run</a> · commit <code>{safe_commit}</code></p>
 <p class="note">Retired hardware instructions are measured across each editor cgroup from fresh-profile launch through the first visible normal main window. This boundary measures window readiness, not completion of background work or interactivity. Controller, desktop and shutdown work are excluded. Polling and counter-disable latency are included. OS filesystem caches may be warm. Each value below is a measured trial, and the summary is its median. Measurement sources and full host and protocol metadata are available in each downloadable JSON file.</p>
-<p>The ARM matrix covers LVCE, VS Code, Zed, Lapce, Geany and Basic Electron. This is a subset of the reference idle CPU chart; other editors are outside this initial ARM artifact matrix.</p>
+<p>The ARM matrix covers LVCE, VS Code, Zed, Lapce, Geany, Basic Electron, IntelliJ IDEA Community, Eclipse IDE for Java Developers, and Cursor. Atom and Theia are excluded because verified native Linux ARM64 artifacts are unavailable. This is a subset of the reference idle CPU chart.</p>
 <p>All {len(entries)} editors completed with valid measurements.</p>
 <section aria-labelledby="chart-heading"><h2 id="chart-heading">Median startup instructions by editor</h2>
 <p>Editors are ordered by median instruction count, lowest first. Each marker uses the same vertical scale; lower values appear closer to zero at the bottom. Scroll the chart horizontally on narrow screens.</p>

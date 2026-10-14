@@ -14,8 +14,8 @@ ROOT = Path(__file__).resolve().parent.parent
 LOCK = ROOT / "config/editors.lock.json"
 
 
-def checksum(path):
-    digest = hashlib.sha256()
+def checksum(path, algorithm="sha256"):
+    digest = hashlib.new(algorithm)
     with path.open("rb") as source:
         for chunk in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(chunk)
@@ -29,8 +29,9 @@ def download(entry, archive):
         request = urllib.request.Request(entry["url"], headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(request) as response, archive.open("wb") as destination:
             shutil.copyfileobj(response, destination)
-    actual = checksum(archive)
-    if actual != entry["sha256"]:
+    actual = checksum(archive, entry.get("checksumAlgorithm", "sha256"))
+    expected = entry.get("checksum", entry.get("sha256"))
+    if actual != expected:
         raise ValueError(f"Checksum mismatch for {entry['id']}: {actual}")
 
 
@@ -39,6 +40,9 @@ def extract(entry, archive, destination):
         shutil.rmtree(destination)
     destination.mkdir(parents=True)
     if archive.suffix == ".deb":
+        architecture = subprocess.check_output(["dpkg-deb", "-f", str(archive), "Architecture"], text=True).strip()
+        if entry.get("architecture") and architecture != entry["architecture"]:
+            raise ValueError(f"Wrong package architecture for {entry['id']}: {architecture}")
         subprocess.run(["dpkg-deb", "-x", str(archive), str(destination)], check=True)
     elif archive.suffix == ".zip":
         with zipfile.ZipFile(archive) as source:
@@ -47,6 +51,10 @@ def extract(entry, archive, destination):
         with tarfile.open(archive) as source:
             source.extractall(destination, filter="data")
     binary = destination / entry["binary"]
+    if not binary.exists() and entry.get("binaryGlob"):
+        matches = list(destination.glob(entry["binaryGlob"]))
+        if len(matches) == 1:
+            binary = matches[0]
     if not binary.exists():
         raise FileNotFoundError(f"Binary not found after extracting {entry['id']}: {binary}")
     binary.chmod(binary.stat().st_mode | 0o111)
