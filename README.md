@@ -48,13 +48,14 @@ nine-editor matrix must succeed for a report to be considered complete.
 ## Basic Electron switch experiment
 
 The `Electron switch experiment` CI job measures Basic Electron v44.3.0 on the
-same ARM host and X11 setup with ten fresh-profile trials for each configuration:
+same ARM host and X11 setup with thirty fresh-profile trials for each configuration:
 the existing baseline, `--disable-background-networking`,
 `--disable-http-cache`, `--disable-http2`, and the two documented HTTP switches
 together. It uploads each complete result as `electron-switch-experiment`,
 including the exact command, raw per-trial counter output, host metadata, window
-evidence and fresh-profile protocol. The experiments run in configuration order;
-filesystem caches may warm across configurations, as in the main benchmark.
+evidence and fresh-profile protocol. Ten blocks of three trials run in seeded,
+shuffled configuration order; the seed and full order are stored with each
+result. Filesystem caches may warm across configurations, as in the main benchmark.
 
 Electron v44.3.0 documents `--disable-http-cache` and `--disable-http2` as
 supported switches. Its switch documentation says unsupported switches have no

@@ -13,6 +13,7 @@ from counters import Capture, parse_counter
 from install import checksum, extract
 import report
 import benchmark
+import switch_experiment
 from benchmark import is_main_window
 
 
@@ -73,6 +74,13 @@ class MetricsTest(unittest.TestCase):
         app_argument = command.index(str(Path(directory) / 'basic-electron'))
         self.assertEqual(command[command.index('--disable-gpu') + 2:app_argument], switches)
         self.assertEqual(benchmark.ELECTRON_SWITCH_SETS['baseline'], [])
+
+    def test_switch_experiment_order_is_repeatable_and_covers_each_configuration(self):
+        first = switch_experiment.execution_order()
+        self.assertEqual(first, switch_experiment.execution_order())
+        self.assertEqual(len(first), switch_experiment.ROUNDS)
+        for switch_sets in first:
+            self.assertEqual(set(switch_sets), set(switch_experiment.SWITCH_SETS))
 
     def test_main_window_type_defaults_and_rejections(self):
         mapped = 'WM_STATE(WM_STATE):\n    window state: Normal\n'
