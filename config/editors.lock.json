@@ -2,28 +2,28 @@
   {
     "id": "lvce",
     "name": "LVCE Editor",
-    "version": "v0.122.9",
-    "archive": "lvce-v0.122.9_arm64.deb",
-    "url": "https://github.com/lvce-editor/lvce-editor/releases/download/v0.122.9/lvce-v0.122.9_arm64.deb",
-    "sha256": "5d7cb83a4bd34034f20a45dcd113f3bdd283a69859d7564e16dbfc4cb7d11478",
+    "version": "v0.122.24",
+    "archive": "lvce-v0.122.24_arm64.deb",
+    "url": "https://github.com/lvce-editor/lvce-editor/releases/download/v0.122.24/lvce-v0.122.24_arm64.deb",
+    "sha256": "109ad59cda5198006c1bedd2558ed71d9c97074dd588498e3f372eab800d32f0",
     "binary": "usr/lib/lvce/lvce"
   },
   {
     "id": "vscode",
     "name": "VS Code",
-    "version": "1.141.1",
+    "version": "1.141.2",
     "archive": "vscode-arm64.tar.gz",
-    "url": "https://vscode.download.prss.microsoft.com/dbazure/download/stable/7baac39ec3ca969dab74ac12c097f6a486e46593/code-stable-arm64-1791832958.tar.gz",
-    "sha256": "4d41625900780ab8b3fbe45cbae572d6ec61977ed33685b5326bf81ac12a1a40",
+    "url": "https://vscode.download.prss.microsoft.com/dbazure/download/stable/16507d91be0dc1ce4f94c04d4d0430210b8685d9/code-stable-arm64-1791980381.tar.gz",
+    "sha256": "75f365cc814a1239f63c1782ff5478054bb728d6468db442ec06a32fa579b2ec",
     "binary": "VSCode-linux-arm64/code"
   },
   {
     "id": "zed",
     "name": "Zed",
-    "version": "v1.18.1",
+    "version": "v1.24.2",
     "archive": "zed-linux-aarch64.tar.gz",
-    "url": "https://github.com/zed-industries/zed/releases/download/v1.18.1/zed-linux-aarch64.tar.gz",
-    "sha256": "7ee93bcd1059c4f0d700578ccfa00aebda5fc521c943fe3ffbf71aac41a081a7",
+    "url": "https://github.com/zed-industries/zed/releases/download/v1.24.2/zed-linux-aarch64.tar.gz",
+    "sha256": "96a54806a7e286452078bdfc94b63c7bf6b8324ffcb16c5c60ff1fd96743ea45",
     "binary": "zed.app/libexec/zed-editor"
   },
   {
@@ -38,20 +38,20 @@
   {
     "id": "basic-electron",
     "name": "Basic Electron",
-    "version": "v44.3.0",
-    "archive": "electron-v44.3.0-linux-arm64.zip",
-    "url": "https://github.com/electron/electron/releases/download/v44.3.0/electron-v44.3.0-linux-arm64.zip",
-    "sha256": "c11fde221c08e9bffdb3336579f09bd934a009862f509af5033616876741be24",
+    "version": "v44.7.2",
+    "archive": "electron-v44.7.2-linux-arm64.zip",
+    "url": "https://github.com/electron/electron/releases/download/v44.7.2/electron-v44.7.2-linux-arm64.zip",
+    "sha256": "f8ecb0702b6a0b10274d2c3043dddaa22da77addcab98e7e0b1e0d4f6c2d93e9",
     "binary": "electron",
     "app": "basic-electron"
   },
   {
     "id": "intellij",
     "name": "IntelliJ IDEA Community",
-    "version": "2025.3",
-    "archive": "idea-2025.3-aarch64.tar.gz",
-    "url": "https://download.jetbrains.com/idea/idea-2025.3-aarch64.tar.gz",
-    "sha256": "07c83a9d219fa8945b6accb7f3284658553e5c812053a97621b8f84bc031e57c",
+    "version": "2026.2.3",
+    "archive": "idea-2026.2.3-aarch64.tar.gz",
+    "url": "https://download.jetbrains.com/idea/idea-2026.2.3-aarch64.tar.gz",
+    "sha256": "873286dd6406971a2311827edd66c56060c345582a4a6b1774e3925183b02ec5",
     "binary": "bin/idea.sh",
     "binaryGlob": "idea-*/bin/idea.sh"
   },
@@ -78,7 +78,7 @@
   {
     "id": "geany",
     "name": "Geany",
-    "version": "Ubuntu 24.04 package",
+    "version": "2.0-1build2",
     "binary": "geany",
     "package": "geany"
   }

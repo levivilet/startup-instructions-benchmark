@@ -30,9 +30,9 @@ provides the hardware accounting and synchronized cutoff.
 OS filesystem caches may be warm, including subsequent trials. The runner uses
 software graphics and an X11 desktop. These are fresh-profile launches, not cold
 machine boots. Results from different editor jobs use separate instances of the
-same ARM image; compare counts with the included CPU/kernel metadata. Geany uses
-the Ubuntu package with its exact installed version recorded; other packages have
-checked-in versions and SHA-256 hashes verified before extraction.
+same ARM image; compare counts with the included CPU/kernel metadata. Geany uses the Ubuntu 24.04 package pinned to version 2.0-1build2; report
+validation rejects measurements from a different installed package build. Other
+packages have checked-in versions and SHA-256 hashes verified before extraction.
 
 ## Initial ARM matrix
 
@@ -47,7 +47,7 @@ nine-editor matrix must succeed for a report to be considered complete.
 
 ## Basic Electron switch experiment
 
-The `Electron switch experiment` CI job measures Basic Electron v44.3.0 on the
+The `Electron switch experiment` CI job measures Basic Electron v44.7.2 on the
 same ARM host and X11 setup with thirty fresh-profile trials for each configuration:
 the existing baseline, `--disable-background-networking`,
 `--disable-http-cache`, `--disable-http2`, and the two documented HTTP switches
