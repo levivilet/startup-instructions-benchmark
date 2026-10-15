@@ -35,6 +35,9 @@ def validate_result(data: dict, editor_id: str) -> dict:
             raise ValueError(f"{editor_id}: trial {index} is missing its measurement source")
     if not isinstance(data.get("protocol"), dict) or not isinstance(data.get("host"), dict):
         raise ValueError(f"{editor_id}: result is missing protocol or host metadata")
+    editor = next(editor for editor in EDITORS if editor["id"] == editor_id)
+    if editor.get("package") and data["host"].get("packageVersion") != editor["version"]:
+        raise ValueError(f"{editor_id}: installed package version does not match the lock file")
     return data
 
 

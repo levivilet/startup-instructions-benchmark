@@ -22,7 +22,10 @@ def result(editor):
     trial = dict(valid=True, instructions=100, launchToWindowSeconds=.1,
                  launchToCutoffSeconds=.11, source='perf cgroup', readiness={'windowId': '1'},
                  cutoffAcknowledged=True, rawCounter='100;;instructions;startup-test;1234;100.00;;\n')
-    return dict(editor=editor, protocol={'version': 1}, host={'machine': 'aarch64'},
+    host = {'machine': 'aarch64'}
+    if editor.get('package'):
+        host['packageVersion'] = editor['version']
+    return dict(editor=editor, protocol={'version': 1}, host=host,
                 trials=[dict(trial, repeat=i+1) for i in range(3)])
 
 
@@ -209,6 +212,14 @@ class MetricsTest(unittest.TestCase):
                 path.mkdir()
                 (path / 'results.json').write_text(json.dumps(result(editor)))
             self.assertEqual(len(report.load_results(root)), len(report.EDITORS))
+            geany = next(editor for editor in report.EDITORS if editor['id'] == 'geany')
+            geany_path = root / 'startup-geany' / 'results.json'
+            wrong_package = result(geany)
+            wrong_package['host']['packageVersion'] = 'wrong'
+            geany_path.write_text(json.dumps(wrong_package))
+            with self.assertRaisesRegex(ValueError, 'installed package version'):
+                report.load_results(root)
+            geany_path.write_text(json.dumps(result(geany)))
             path = root / ('startup-' + report.EDITORS[0]['id']) / 'results.json'
             broken = result(dict(report.EDITORS[0], version='wrong'))
             path.write_text(json.dumps(broken))
